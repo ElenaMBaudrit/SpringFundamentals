@@ -13,7 +13,7 @@ import com.embaudrit.crud.Crud;
 @Service
 public class CrudService {
 	List<Crud> languages = new ArrayList<Crud>(Arrays.asList(
-			new Crud("Java", "Oskar Myer", "1.8"),
+			new Crud("Java", "Oscar Mayer", "1.8"),
 			new Crud("HTML", "Betty Crocker", "5"),
 			new Crud("Python", "C. Boyardee", "8")));
 	
@@ -42,4 +42,20 @@ public class CrudService {
 	public void addLanguage (Crud language) {
 		languages.add(language);
 	}
+	
+	public void updateLanguage(int id, Crud language) {
+		if (id < languages.size()) {
+			languages.set(id, language);
+		}
+	}
+	
+	public void destroyLanguage(int id) {
+		if (id < languages.size()) {
+			languages.remove(id);
+		}
+	}
+	
+	
+	
+	
 }

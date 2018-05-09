@@ -17,7 +17,7 @@
 		
 		</ul>
 		<br>
-		<a href = "/edit/${loop.index}">Edit</a>
-		<a href = "">Delete</a>
+		<a href = "/edit/${index}">Edit</a>
+		<a href="/delete/${index}">Delete</a>
 	</body>
 </html>

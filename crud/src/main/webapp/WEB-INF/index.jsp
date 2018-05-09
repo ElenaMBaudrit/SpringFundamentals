@@ -23,7 +23,7 @@
 				<td><a href = "/languages/${loop.index}"><c:out value = "${language.name}"></c:out></a></td>
 				<td><c:out value = "${language.creator }"></c:out></td>
 				<td><c:out value = "${language.version }"></c:out></td>
-				<td><a href = "">Delete</a>|<a href = "/edit/${loop.index}">Edit</a></td>
+				<td><a href = "/delete/${loop.index}">Delete</a>|<a href = "/edit/${loop.index}">Edit</a></td>
 			</tr>
 		</c:forEach>
 		</table>

@@ -24,7 +24,8 @@ public class CRUDControllers {
 	}
 	
 	@RequestMapping("/")
-	public String index(Model model) {
+	//Put the model attribute as a parameter HERE (the line below)
+	public String index(Model model, @ModelAttribute("language") Crud language) {
 		List<Crud> languages = crudService.allLanguages(); //This "allLanguages" comes from the CrudService.java file
 		model.addAttribute("languages", languages);
 		return "index.jsp";
@@ -37,7 +38,8 @@ public class CRUDControllers {
 			return "index.jsp";
 		}
 		else {
-			return "redirect:/edit/{index}";
+			crudService.addLanguage(language);
+			return "redirect:/";
 		}
 	}
 	
@@ -45,14 +47,28 @@ public class CRUDControllers {
 	public String editLanguage(Model model, @PathVariable("index") int index) {
 		Crud language = crudService.findEditLanguage(index);
 		model.addAttribute("language", language);
+		model.addAttribute("index", index);
 		return "edit.jsp";
+	}
+	
+	@PostMapping(path = "/edited/{index}")
+	public String editedLanguage (@Valid @ModelAttribute("language") Crud language, @PathVariable("index") int index) {
+		crudService.updateLanguage(index, language);
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/languages/{index}")
 	public String showLanguage(Model model, @PathVariable("index") int index) {
 		Crud language = crudService.findShowLanguage(index);
 		model.addAttribute("language", language);
+		model.addAttribute("index", index);
 		return "languages.jsp";
+	}
+	
+	@RequestMapping(value = "/delete/{id}")
+	public String destroyLanguage (@PathVariable("id") int id) {
+		crudService.destroyLanguage(id);
+		return "redirect:/";
 	}
 
 }

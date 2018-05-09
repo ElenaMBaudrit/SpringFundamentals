@@ -12,7 +12,7 @@ public class Crud {
 	@Size (min = 3, max = 20) //Validation as well
 	private String creator;
 	
-	@Size (min = 3, max = 20) //More!
+	@Size (min = 1, max = 20) //More!
 	private String version;
 	
 // 2. Empty constructor

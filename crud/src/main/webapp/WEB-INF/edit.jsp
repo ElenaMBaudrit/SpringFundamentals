@@ -9,10 +9,10 @@
 	</head>
 	<body>
 		<div id = "top_links">
-			<a href = "">Delete</a>
+			<a href="/delete/${index}">Delete</a>
 			<a href = "/">Dashboard</a>
 		</div>
-		<form action = "/edit/{index}" method = "post">
+		<form action = "/edited/${index}" method = "post" modelAttribute="language">
 			<ul>
 				<li>Name:
 					<ul>
