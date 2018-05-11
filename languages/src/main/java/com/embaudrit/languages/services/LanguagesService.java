@@ -1,6 +1,7 @@
 package com.embaudrit.languages.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,19 @@ public class LanguagesService {
 		languagesRepository.deleteById(id);
 	}
 	
+	public Languages findLanguagesById(Long id) {
+		Optional<Languages> optionalLanguages = languagesRepository.findById(id);
+		if (optionalLanguages.isPresent()) {
+			return optionalLanguages.get();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public void updateLanguages(Languages languages) {
+		languagesRepository.save(languages);
+	}
 
 	
 	

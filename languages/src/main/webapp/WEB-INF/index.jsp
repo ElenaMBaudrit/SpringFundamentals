@@ -11,7 +11,7 @@
 	<body>
 	 
 		<table>
-		<c:forEach items ="${ languages }" var = "language" varStatus = "loop"> 
+		<c:forEach items ="${ languages }" var = "language"> 
 		<%--https://www.tutorialspoint.com/jsp/jstl_core_foreach_tag.htm --%>
 		<%--https://stackoverflow.com/questions/18825950/how-to-get-a-index-value-from-foreach-loop-in-jstl --%>
 			<tr>
@@ -21,14 +21,14 @@
 				<th>Action</th>
 			</tr>
 			<tr>
-				<td><a href = "/languages/${loop.index}"><c:out value = "${language.name}"></c:out></a></td>
+				<td><a href = "/languages/${language.id}"><c:out value = "${language.name}"></c:out></a></td>
 				<td><c:out value = "${language.creator }"></c:out></td>
 				<td><c:out value = "${language.version }"></c:out></td>
-				<td><a href = "/delete/${loop.index}">Delete</a>|<a href = "/edit/${loop.index}">Edit</a></td>
+				<td><a href = "/delete/${language.id}">Delete</a>|<a href = "/edit/${language.id}">Edit</a></td>
 			</tr>
 		</c:forEach>
 		</table>
-		<form:form method="POST" action="/new" modelAttribute="language">
+		<form:form method="POST" action="/add_lang" modelAttribute="language">
 			<form:label path = "name">Name
 			<form:errors path = "name"/>
 			<form:input path = "name"/></form:label>

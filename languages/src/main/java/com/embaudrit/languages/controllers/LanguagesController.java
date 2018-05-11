@@ -1,9 +1,15 @@
 package com.embaudrit.languages.controllers;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.embaudrit.languages.Languages;
@@ -20,9 +26,26 @@ private final LanguagesService languagesService;
 	@RequestMapping("/")
 	//Put the model attribute as a parameter HERE (the line below)
 	public String index (Model model, @ModelAttribute("language") Languages language) {   
-//		List<Languages> languages = languagesService.allLanguages(); //This "allLanguages" comes from the CrudService.java file
-//		model.addAttribute("languages", languages);
+		List<Languages> languages = languagesService.allLanguages();
+		model.addAttribute("languages", languages);
 		return "index.jsp";
+	}
+	
+	@RequestMapping("/{id}")
+	public String findLanguagesByIndex (@PathVariable("id") Long id, Model model) {
+		model.addAttribute("languages", languagesService.findLanguagesById(id));
+		return "index.jsp";
+	}
+	
+	@PostMapping("/add_lang") 
+	public String newLanguages(@Valid @ModelAttribute("language") Languages languages, BindingResult result) {
+		if (result.hasErrors()) {
+			return "index.jsp";
+		}
+		else {
+			languagesService.addLanguages(languages);
+			return "redirect:/";
+		}
 	}
 	
 	@RequestMapping (value = "/delete/{id}")
@@ -31,42 +54,22 @@ private final LanguagesService languagesService;
 		return "redirect:/";
 	}
 	
+	@RequestMapping("/edit/{id}")
+	public String editLanguages(@PathVariable ("id") Long id, Model model, @ModelAttribute("language") Languages languages) {
+		model.addAttribute("languages", languagesService.findLanguagesById(id));
+		return "edit.jsp";
+	}
 	
-//	@PostMapping("/new") //This was called "/process" before. Remember to change it on the .jsp
-//	// Why "@PostMapping"? Not quite sure at this time.
-//	public String newLanguage(@Valid @ModelAttribute("language") Languages language, BindingResult result) {
-//		if (result.hasErrors()) {
-//			return "index.jsp";
-//		}
-//		else {
-//			languagesService.addLanguages(language);
-//			return "redirect:/";
-//		}
-//	}
-//	
-//	@RequestMapping("/edit/{index}")
-//	public String editLanguage(Model model, @PathVariable("index") int index) {
-////		Languages language = languagesService.findEditLanguage(index);
-////		model.addAttribute("language", language);
-////		model.addAttribute("index", index);
-//		return "edit.jsp";
-//	}
-	
-//	@PostMapping(path = "/edited/{index}")
-//	public String editedLanguage (@Valid @ModelAttribute("language") Languages language, @PathVariable("index") int index) {
-//		languagesService.updateLanguage(index, language);
-//		return "redirect:/";
-//	}
-	
-//	@RequestMapping("/languages/{index}")
-//	public String showLanguage(Model model, @PathVariable("index") int index) {
-//		Languages languages = languagesService.findShowLanguage(index);
-//		model.addAttribute("language", language);
-//		model.addAttribute("index", index);
-//		return "languages.jsp";
-//	}
-//	
-
-//}
+	@PostMapping("/edit/{id}")
+	//the "language" must match the one in the form (for submission)
+	public String updateLanguages (@Valid @ModelAttribute("language") Languages languages, BindingResult result, @PathVariable ("id") Long id) {
+		if (result.hasErrors()) {
+			return "edit.jsp";
+		}
+		else {
+			languagesService.updateLanguages(languages);
+			return "redirect:/";
+		}
+	}
 
 }
