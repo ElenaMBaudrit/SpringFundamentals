@@ -1,0 +1,9 @@
+
+*{
+  text-align: left;
+  margin: 20px;
+}
+#wrapper{
+	width : 970px;
+	display : inline-block;
+}
