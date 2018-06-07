@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.embaudrit.javathethird.models.Lecture;
+import com.embaudrit.javathethird.models.SignUp;
 
 @Repository
 public interface LectureRepository extends CrudRepository <Lecture, Long>{
@@ -20,6 +21,4 @@ public interface LectureRepository extends CrudRepository <Lecture, Long>{
 	
 	@Query("SELECT l FROM Lecture l ORDER BY (l.signUps.size) DESC") // With "GROUP BY" did not work...Well, it worked weird
 	List<Lecture> findAllDesc();
-	
-
 }

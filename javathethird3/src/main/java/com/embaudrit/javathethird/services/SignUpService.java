@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.embaudrit.javathethird.models.Lecture;
 import com.embaudrit.javathethird.models.SignUp;
 import com.embaudrit.javathethird.repositories.SignUpRepository;
 
@@ -27,12 +28,12 @@ public class SignUpService {
 		return suRepo.findAll();
 	}
 	
-	//Display courses in Ascending order
+	//Display signed up users in Ascending order
 	public List<SignUp> findAllAsc(){
 		return suRepo.findAllAsc();
 	}
 	
-	//Display courses in descending order
+	//Display signed up users in descending order
 	public List<SignUp> findAllDesc(){
 		return suRepo.findAllDesc();
 	}
@@ -42,7 +43,15 @@ public class SignUpService {
 		suRepo.delete(signUp);
 	}
 	
-
+	//Display signed up users in Ascending order
+	public List<SignUp> getLectureWhereId(Long id){
+		return suRepo.getLectureWhereId(id);
+	}
+	
+	//Display signed up users in descending order
+	public List<SignUp> getLectureWhereIdDesc(Long id){
+		return suRepo.getLectureWhereIdDesc(id);
+	}
 
 }
 

@@ -1,6 +1,7 @@
 package com.embaudrit.javathethird.controllers;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.embaudrit.javathethird.models.Lecture;
 import com.embaudrit.javathethird.models.SignUp;
 import com.embaudrit.javathethird.services.LectureService;
+import com.embaudrit.javathethird.services.SignUpService;
 import com.embaudrit.javathethird.services.UserService;
 
 @Controller
@@ -24,10 +26,12 @@ public class LectureController {
 	//Inject Services
 	private LectureService lServ;
 	private UserService uServ;
+	private SignUpService suServ;
 	
-	public LectureController (LectureService lServ, UserService uServ) {
+	public LectureController (LectureService lServ, UserService uServ, SignUpService suServ) {
 		this.lServ = lServ;
 		this.uServ = uServ;
+		this.suServ = suServ;
 	}
 	
 	// To display the newCourse.jsp, where the user could add a new one
@@ -51,12 +55,35 @@ public class LectureController {
 	}
 	
 	// To display the information of a specific course (selected from the ones shown in courses.jsp)
-	@RequestMapping("/courses/{id}")
+	@RequestMapping(value = {"/courses/{id}"}) //Last
 	public String showLecture(@PathVariable("id") Long id, Model m, Principal p, @ModelAttribute("signup") SignUp signup) {
-		m.addAttribute("lecture", lServ.findById(id));
-		m.addAttribute("signups", lServ.findAll());		
+		Lecture thisLecture = lServ.findById(id);
+		m.addAttribute("lecture", thisLecture);
+		m.addAttribute("signups", thisLecture.getSignUps());		
 		String username = p.getName();
 		m.addAttribute("currentUser", uServ.findByUsername(username));
+		return "showCourse.jsp";
+	}
+	
+	//To display the attendees for a course in a descending or ascending order.
+	@RequestMapping(value= {"/courses/{id}/signup_{order}"})
+	public String signUpOrder(@PathVariable("id") Long id, @PathVariable("order") String ord, Principal p, Model m, @ModelAttribute("signup") SignUp signup){
+		String username = p.getName();
+		Lecture lecture = lServ.findById(id); 
+		
+		// Will load the lecture (1) information on page.
+		m.addAttribute("lecture", lServ.findById(id)); 
+		System.out.println("Is this working?");
+//		Will find and order all signups for the lecture above
+		if (ord.equals("asc")) {
+			m.addAttribute("signups", suServ.getLectureWhereId(id)); //Changed the "signups" for "lectures". Did not break. If it is changed to "lecture", it breaks 
+		} 
+		else if (ord.equals("desc" )) {
+			m.addAttribute("signups", suServ.getLectureWhereIdDesc(id));//Changed the "signups" for "lectures". Did not break. "Lecture"? Breaks
+		} else {
+			m.addAttribute("signups", suServ.findById(id));
+		}
+		System.out.println("is this if being taken cared of?");
 		return "showCourse.jsp";
 	}
 	
@@ -92,6 +119,30 @@ public class LectureController {
 		return "redirect:/courses";				
 	}
 	
-
 	
+	
+	
+	
+	
+//	public String indexSignUp(@PathVariable("id") Long id, @PathVariable ("order") String order, Principal principal, Model m) {
+//		String username = principal.getName();
+//		//The new 2 lines (the ones from the exam with the likes)
+//    	Lecture lecture = lServ.findById(id);
+//    	@SuppressWarnings("unused")
+//		List<SignUp> singups = lecture.getSignUps();
+//    	//
+//		m.addAttribute("lecture", lServ.findById(id));
+//		m.addAttribute("currentUser", uServ.findByUsername(username));
+//		m.addAttribute("currentUserId", uServ.findByUsername(username).getId());
+		//THE FOLLOWING LINES WORK! JUST COMMENTED FOR FUNSIES
+//		if (order.equals("asc")) {
+//			m.addAttribute("signups", lServ.getLectureWhereId(id));
+//		} else if (order.equals("desc" )) {
+//			m.addAttribute("signups", lServ.getLectureWhereIdDesc(id));
+//		} else {
+//			m.addAttribute("signups", lServ.findById(id));
+//		}
+////		
+
+	//findAllSignUpsforLectureId this is the neme for the function in the Service
 }

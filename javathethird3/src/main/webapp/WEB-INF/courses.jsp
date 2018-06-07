@@ -35,14 +35,28 @@
 	        </thead>
 	        <tbody>
 	            <c:forEach items="${ lecture }" var="lecture">
+	            	<c:set var = "err" value = "0"/>
 	                <tr>
 	                    <td><a href="/courses/${ lecture.id }">${ lecture.name }</a></td>
 	                    <td>${ lecture.instructor }</td>
 	                    <td>${lecture.signUps.size() } / ${lecture.el_limite }</td>
 	                    <td>
 	                    
-	                    <a href="/courses/${lecture.id}/signup"><button>Add</button></a>
+	                    <c:forEach items="${ lecture.signUps }" var="su">
+		                    <c:if test = "${su.user.id == currentUser.id && su.lecture.id == lecture.id}">
+					            <p><c:out value="You have already signed up for this course!"/></p>
+					            <c:set var = "err" value = "1"/>
+					        </c:if>
+	                    </c:forEach>
 	                    
+	                    <c:if test = "${lecture.signUps.size() >= lecture.el_limite}">
+				            <p><c:out value="This lecture cannot accept new Singups"/></p>
+				            <c:set var = "err" value = "1"/>
+				        </c:if>
+	                    
+	                    <c:if test = "${err != '1'}">
+	                    	<a href="/courses/${lecture.id}/signup"><button>Add</button></a>
+	                    </c:if>
 	                    
 						
 						</td>

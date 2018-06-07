@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.embaudrit.javathethird.models.Lecture;
+import com.embaudrit.javathethird.models.SignUp;
 import com.embaudrit.javathethird.repositories.LectureRepository;
 
 @Service
@@ -51,6 +52,5 @@ public class LectureService {
 	public List<Lecture> findAllDesc(){
 		return lRepo.findAllDesc();
 	}
-	
 
 }

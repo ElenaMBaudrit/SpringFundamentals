@@ -35,7 +35,7 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-     			<c:forEach items="${lecture.signUps}" var="signup">
+     			<c:forEach items="${signups}" var="signup">
 				<tr>
 					<td>${signup.user.name}</td>
 					<td>${signup.createdAt}</td>

@@ -55,7 +55,7 @@ public class SignUpController {
 			return "redirect:/courses";
 		}
 		
-		redirectAttributes.addFlashAttribute("errors", "Congratulations you have signe up for: " + currentLecture.getName());
+		redirectAttributes.addFlashAttribute("errors", "Congratulations you have signed up for: " + currentLecture.getName());
 		suServ.addSignUp(newsignUp);
 		
 		return "redirect:/courses"; //THIS MAY CHANGE IN A WHILE. nOT QUITE SURE IF THIS IS THE CORRECT ROUTE
@@ -70,29 +70,29 @@ public class SignUpController {
 	
 
 	
-	// To sort the order of the attendees for the specific course in a descending or ascending one
-	@RequestMapping(value= {"/courses/{id}/signup_{order}"})
-	public String indexSignUp(@PathVariable("id") Long id, @PathVariable ("order") String order, Principal principal, Model m) {
-		String username = principal.getName();
-		//The new 2 lines (the ones from the exam with the likes)
-    	Lecture lecture = lServ.findById(id);
-    	@SuppressWarnings("unused")
-		List<SignUp> singups = lecture.getSignUps();
-    	//
-		m.addAttribute("lecture", lServ.findById(id));
-		m.addAttribute("currentUser", uServ.findByUsername(username));
-		m.addAttribute("currentUserId", uServ.findByUsername(username).getId());
-		//THE FOLLOWING LINES WORK! JUST COMMENTED FOR FUNSIES
-//		if (order.equals("asc")) {
-//			m.addAttribute("signups", suServ.findAllAsc());
-//		} else if (order.equals("desc" )) {
-//			m.addAttribute("signups", suServ.findAllDesc());
-//		} else {
-//			m.addAttribute("signups", suServ.findAll());
-//		}
-		
-		return "showCourse.jsp";
-	}
+//	// To sort the order of the attendees for the specific course in a descending or ascending one
+//	@RequestMapping(value= {"/courses/{id}/signup_{order}"})
+//	public String indexSignUp(@PathVariable("id") Long id, @PathVariable ("order") String order, Principal principal, Model m) {
+//		String username = principal.getName();
+//		//The new 2 lines (the ones from the exam with the likes)
+//    	Lecture lecture = lServ.findById(id);
+//    	@SuppressWarnings("unused")
+//		List<SignUp> singups = lecture.getSignUps();
+//    	//
+//		m.addAttribute("lecture", lServ.findById(id));
+//		m.addAttribute("currentUser", uServ.findByUsername(username));
+//		m.addAttribute("currentUserId", uServ.findByUsername(username).getId());
+//		//THE FOLLOWING LINES WORK! JUST COMMENTED FOR FUNSIES
+////		if (order.equals("asc")) {
+////			m.addAttribute("signups", suServ.findAllAsc());
+////		} else if (order.equals("desc" )) {
+////			m.addAttribute("signups", suServ.findAllDesc());
+////		} else {
+////			m.addAttribute("signups", lServ.findAll());
+////		}
+////		
+//		return "showCourse.jsp";
+//	}
 	
 	// To remove the relationship between an user and a lecture
 	@RequestMapping ("/courses/{id}/remove/{suid}")
@@ -101,5 +101,18 @@ public class SignUpController {
 		suServ.removeSignUp(signUp);
 		return ("redirect:/courses/"+id);				
 	}
+	
+//// 	CODE THAT MAY WORK (FOR THE DESCENDING ORDER OF THE ATTENDEES)
+//	@RequestMapping(value= {"courses/{id}/signup_{order"})
+//	public String signUpOrder(@PathVariable("order") String ord, Principal p, Model m){
+//		String username = p.getName();
+//		if (ord.equals("asc")){
+//			m.addAttribute("signups", suServ.findAllAsc());
+//		} else if (ord.equals("desc")){
+//			m.addAttribute("signups", suServ.findAllDesc());
+//		} else{
+//			m.addAttribute("signups", suServ.findAll());
+//		}
+//		return "showCourse.jsp"
 
 }
